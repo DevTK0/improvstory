@@ -1,4 +1,9 @@
-export default function Example() {
+export default function Example({ clicked }: any) {
+    const clickPost = () => {
+        console.log("clicked");
+        clicked.value = true;
+    };
+
     return (
         <div className="max-w-xl m-auto pt-3">
             <div className="flex items-start space-x-4">
@@ -22,7 +27,12 @@ export default function Example() {
                         </div>
 
                         <div className="absolute inset-x-0 bottom-0 flex justify-end py-2 pl-3 pr-2">
-                            <button className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <button
+                                type="button"
+                                id="button"
+                                onClick={clickPost}
+                                className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            >
                                 Post
                             </button>
                         </div>
