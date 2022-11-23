@@ -1,12 +1,14 @@
-export default function Story(prop: any) {
-    const story: string[] = prop.story;
+import { useStore } from "../story.store";
+
+export default function Story() {
+    const { story } = useStore();
 
     return (
-        <ul key={prop} className="">
-            {story.map((line) => {
+        <ul className="">
+            {story.map((content, index) => {
                 return (
-                    <li key={line} className="pt-2">
-                        {line}
+                    <li key={index} className="pt-5">
+                        {content}
                     </li>
                 );
             })}

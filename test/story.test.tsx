@@ -7,34 +7,23 @@ import fetch from "jest-fetch-mock";
 import Story from "../src/pages/components/story";
 import { useStore } from "../src/pages/story.store";
 
-fetch.enableMocks();
 const originalState = useStore.getState();
 
 beforeEach(() => {
-    fetch.resetMocks();
     useStore.setState(originalState);
 });
 
 describe("user can post content", () => {
     const USER_TEXT_INPUT = "hello world!!!";
 
-    test("post content", async () => {
-        fetch.mockResponseOnce(JSON.stringify({ story: USER_TEXT_INPUT }));
-
-        render(<TextArea />);
+    test("posted content is displayed", async () => {
+        render(<Story />);
 
         await act(() => {
-            const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
-            textarea.value = USER_TEXT_INPUT;
-
-            const button = screen.getByRole("button");
-            fireEvent.click(button);
+            const { addPost } = useStore.getState();
+            addPost(USER_TEXT_INPUT);
         });
-
-        expect(fetch.mock.calls.length).toEqual(1);
-        expect(fetch.mock.calls[0][1]).toBeDefined();
-        expect(fetch.mock.calls[0][1]!.body).toEqual(
-            JSON.stringify({ story: USER_TEXT_INPUT })
-        );
+        const input = screen.getByText(USER_TEXT_INPUT) as HTMLUListElement;
+        expect(input.innerHTML).toEqual(USER_TEXT_INPUT);
     });
 });
