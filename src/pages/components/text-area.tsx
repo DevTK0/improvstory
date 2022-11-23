@@ -1,10 +1,23 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useStore } from "../story.store";
 
-export default function TextArea({ props }: any) {
+export default function TextArea() {
     const textarea = useRef(null);
-    const clickPost = () => {
+    const { addPost } = useStore();
+    const post = () => {
         const userInput = (textarea.current! as HTMLTextAreaElement).value;
-        props.value = userInput;
+
+        fetch("/api/improv/post", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ story: userInput }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                addPost(userInput);
+            });
     };
 
     return (
@@ -32,7 +45,7 @@ export default function TextArea({ props }: any) {
                     <div className="absolute inset-x-0 bottom-0 flex justify-end py-2 pl-3 pr-2">
                         <button
                             type="button"
-                            onClick={clickPost}
+                            onClick={post}
                             className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                             Post
